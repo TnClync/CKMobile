@@ -1,12 +1,16 @@
 # --- Backend Python ---
 backend/venv/
+.venv/
 __pycache__/
 *.pyc
+*.db
 backend/tasks.db
+tasks.db
 
 # --- Android (sẽ áp dụng khi tạo project app/) ---
 build/
 .gradle/
+.kotlin/
 local.properties
 .idea/
 *.iml

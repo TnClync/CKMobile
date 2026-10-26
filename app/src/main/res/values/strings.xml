@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Công việc</string>
+    <string name="online">Online</string>
+    <string name="offline">Ngoại tuyến</string>
+    <string name="sync_button">Đồng bộ</string>
+    <string name="status_pending">Chưa đồng bộ</string>
+    <string name="status_syncing">Đang đồng bộ</string>
+    <string name="status_synced">Đã đồng bộ</string>
+    <string name="status_failed">Thất bại</string>
+    <string name="retry">Thử lại</string>
+    <string name="add_task">Thêm công việc</string>
+    <string name="edit_task">Sửa công việc</string>
+    <string name="title_label">Tiêu đề *</string>
+    <string name="title_placeholder">VD: Mua sữa</string>
+    <string name="description_label">Mô tả</string>
+    <string name="description_placeholder">Chi tiết (tùy chọn)</string>
+    <string name="deadline_label">Thời hạn</string>
+    <string name="deadline_placeholder">Chọn ngày...</string>
+    <string name="cancel">Hủy</string>
+    <string name="save_task">Lưu công việc</string>
+    <string name="delete_task">Xóa công việc</string>
+    <string name="offline_banner">Bạn đang ở chế độ ngoại tuyến — thay đổi sẽ được đồng bộ khi có mạng</string>
+    <string name="conflict_banner">Đã có thay đổi từ thiết bị khác. Đã giữ phiên bản của bạn (quy tắc cuối-gọi-thắng).</string>
+    <string name="sync_failed_warning">Đồng bộ thất bại — bấm Lưu để thử lại</string>
+</resources>
