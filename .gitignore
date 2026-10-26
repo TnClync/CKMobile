@@ -1,0 +1,23 @@
+# --- Backend Python ---
+backend/venv/
+__pycache__/
+*.pyc
+backend/tasks.db
+
+# --- Android (sẽ áp dụng khi tạo project app/) ---
+build/
+.gradle/
+local.properties
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/
+# *.apk KHÔNG ignore - D8 yêu cầu nộp APK
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+
+# --- Claude session (private) ---
+.claude/
