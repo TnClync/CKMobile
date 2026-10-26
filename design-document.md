@@ -299,7 +299,7 @@ Ba điểm quan trọng thể hiện trong sơ đồ:
 
 ### 4.5. Thiết kế giao diện (UI Mockup)
 
-Giao diện gồm 4 màn hình: (1) danh sách task với chip trạng thái đồng bộ, (2) form thêm/sửa dạng bottom sheet, (3) danh sách ở chế độ ngoại tuyến (banner "Bạn đang ở chế độ ngoại tuyến"), (4) banner thông báo xung đột khi LWW tự giải quyết. Chi tiết design tokens, cấu trúc từng màn và danh sách giao nhận Figma nằm trong file [ui-mockup-spec.md](ui-mockup-spec.md) đi kèm tài liệu này.
+Giao diện gồm 4 màn hình: (1) danh sách task với chip trạng thái đồng bộ, (2) form thêm/sửa dạng bottom sheet, (3) danh sách ở chế độ ngoại tuyến (banner "Bạn đang ở chế độ ngoại tuyến"), (4) banner thông báo xung đột khi LWW tự giải quyết. Ảnh mockup các màn nằm ở [docs/mockups/](docs/mockups/).
 
 Ba quyết định thiết kế cần nêu rõ:
 1. **Chip trạng thái đồng bộ** là yếu tố trung tâm của màn danh sách — mỗi task luôn hiển thị một trong bốn trạng thái `PENDING` / `SYNCING` / `SYNCED` / `FAILED` (yêu cầu 1, UC05.1). Trạng thái `FAILED` là chip duy nhất kèm nút "Thử lại".
