@@ -299,15 +299,15 @@ Ba điểm quan trọng thể hiện trong sơ đồ:
 
 ### 4.5. Thiết kế giao diện (UI Mockup)
 
-Ảnh mockup các màn hình (tại [`docs/mockups/`](docs/mockups/)):
+Ảnh mockup các màn hình (tại [`mockups/`](mockups/)):
 
 | Ảnh | Nội dung |
 |---|---|
-| ![Danh sách công việc (online)](docs/mockups/01-list-online.png) | Danh sách công việc, online: đủ 4 trạng thái chip đồng bộ, task `FAILED` kèm nút "Thử lại" |
-| ![Danh sách công việc (offline)](docs/mockups/02-list-offline.png) | Danh sách công việc, offline: banner "Ngoại tuyến", thao tác vẫn được ghi vào Room |
-| ![Thêm công việc](docs/mockups/03-form-add.png) | Form thêm công việc (bottom sheet) |
-| ![Sửa công việc](docs/mockups/04-form-edit.png) | Form sửa công việc: khối Xóa (soft delete) + dòng cảnh báo "Đồng bộ thất bại" |
-| ![4 trạng thái đồng bộ](docs/mockups/05-SyncStatus-4variants.png) | Chi tiết 4 biến thể chip trạng thái: Chưa đồng bộ, Đang đồng bộ, Đã đồng bộ, Thất bại |
+| ![Danh sách công việc (online)](mockups/01-list-online.png) | Danh sách công việc, online: đủ 4 trạng thái chip đồng bộ, task `FAILED` kèm nút "Thử lại" |
+| ![Danh sách công việc (offline)](mockups/02-list-offline.png) | Danh sách công việc, offline: banner "Ngoại tuyến", thao tác vẫn được ghi vào Room |
+| ![Thêm công việc](mockups/03-form-add.png) | Form thêm công việc (bottom sheet) |
+| ![Sửa công việc](mockups/04-form-edit.png) | Form sửa công việc: khối Xóa (soft delete) + dòng cảnh báo "Đồng bộ thất bại" |
+| ![4 trạng thái đồng bộ](mockups/05-SyncStatus-4variants.png) | Chi tiết 4 biến thể chip trạng thái: Chưa đồng bộ, Đang đồng bộ, Đã đồng bộ, Thất bại |
 
 Ba quyết định thiết kế cần nêu rõ:
 1. **Chip trạng thái đồng bộ** là yếu tố trung tâm của màn danh sách — mỗi task luôn hiển thị một trong bốn trạng thái `PENDING` / `SYNCING` / `SYNCED` / `FAILED` (yêu cầu 1, UC05.1). Trạng thái `FAILED` là chip duy nhất kèm nút "Thử lại".

@@ -8,7 +8,7 @@
 
 ## 📱 Cấu trúc Giao diện Android (Jetpack Compose)
 
-Giao diện được thiết kế bám sát 100% tài liệu thiết kế ([`design-document.md`](design-document.md)) và các ảnh mockup tại ([`docs/mockups/`](docs/mockups/)):
+Giao diện được thiết kế bám sát 100% tài liệu thiết kế ([`docs/design-document.md`](docs/design-document.md)) và các ảnh mockup tại ([`docs/mockups/`](docs/mockups/)):
 
 | Thành phần UI | File Kotlin | Mô tả |
 |---|---|---|
