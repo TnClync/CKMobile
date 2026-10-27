@@ -31,7 +31,13 @@ class SyncManager(
     private val taskApi: TaskApi,
     private val context: Context
 ) {
-    private val mutex = Mutex()
+    // Mutex dùng chung toàn tiến trình: SyncWorker (nền) và nút sync thủ công
+    // (qua TaskRepository/ViewModel) không bao giờ đồng bộ song song (mục 4.4.2)
+    private val mutex = SyncManager.processMutex
+
+    companion object {
+        val processMutex = Mutex()
+    }
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
     private val prefs = context.getSharedPreferences("task_sync_prefs", Context.MODE_PRIVATE)
 
