@@ -1,0 +1,57 @@
+Testing Task Sync API
+
+Server: {'message': 'Task Sync API', 'version': '1.0.0'}
+
+✓ Create task: 201
+  [PASS] TC01 create returns 201 - 201
+  [PASS] TC01 Location header present
+  [PASS] TC01 version == 1
+  [PASS] TC01 has changeSeq
+
+✓ List tasks: 200
+  [PASS] GET /api/tasks returns 200
+  [PASS] GET /api/tasks returns array
+  [PASS] list excludes deleted
+
+✓ Idempotency: 201, 200
+  [PASS] TC06 first POST 201
+  [PASS] TC06 retry POST 200 (not 409/500) - 200
+  [PASS] TC06 same version returned
+  [PASS] TC06 same changeSeq returned
+  [PASS] TC06 exactly one record on server - got 1
+
+✓ Conflict: device1=200, device2=409
+  [PASS] TC07 first update 200
+  [PASS] TC07 second update 409 - 409
+  [PASS] TC07 409 has serverVersion
+  [PASS] TC07 409 has current task
+  [PASS] PUT unknown id returns 404 - 404
+
+✓ Delete: 200
+  [PASS] TC08 delete returns 200 (not 204) - 200
+  [PASS] TC08 tombstone body returned
+  [PASS] TC08 tombstone has new version
+  [PASS] TC08 repeat delete 200 (idempotent) - 200
+  [PASS] TC08 repeat delete no version bump
+  [PASS] TC08 delete wrong version 409 - 409
+  [PASS] TC08 tombstone present in changes
+  [PASS] TC08 deleted task not in active list
+
+  [PASS] changes returns nextCursor
+  [PASS] changes returns hasMore
+  [PASS] changes hasMore False when under limit
+  [PASS] pagination covers all records - 9 vs 9
+  [PASS] changeSeq strictly increasing
+  [PASS] skewed-clock task visible to cursor sync
+
+  [PASS] TC05 fault returns 500 - 500
+  [PASS] TC05 reset restores 200 - 200
+
+✓ Stats: {'activeTasks': 8, 'deletedTasks': 2, 'conflicts': 2, 'changeSeq': 14}
+  [PASS] stats returns 200
+  [PASS] stats has activeTasks
+  [PASS] stats has deletedTasks
+  [PASS] stats has conflicts
+  [PASS] stats has changeSeq
+
+✓ All tests passed!
