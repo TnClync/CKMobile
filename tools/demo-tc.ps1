@@ -5,6 +5,12 @@
 $API = "http://127.0.0.1:8000"
 $DB  = "D:\CKMobile\backend\tasks.db"
 
+# Tu dong tim lenh python: thu 'py' truoc (Windows launcher), fallback 'python'
+$PY = if (Get-Command py -ErrorAction SilentlyContinue) { "py" }
+      elseif (Get-Command python -ErrorAction SilentlyContinue) { "python" }
+      else { "py" }
+Write-Host "  (dung interpreter: $PY)" -ForegroundColor DarkGray
+
 function Hdr($t) { Write-Host ""; Write-Host "  --- $t ---" -ForegroundColor Cyan }
 
 function Get-Tasks {
@@ -13,7 +19,7 @@ function Get-Tasks {
         return @($r)
     } catch {
         Write-Host "   [!] Khong goi duoc may chu. Server da chay?" -ForegroundColor Red
-        Write-Host "       cd D:\CKMobile\backend ; python -m uvicorn main:app --host 0.0.0.0 --port 8000" -ForegroundColor DarkGray
+        Write-Host "       cd D:\CKMobile\backend ; $PY -m uvicorn main:app --host 0.0.0.0 --port 8000" -ForegroundColor DarkGray
         return $null
     }
 }
@@ -133,7 +139,7 @@ function Opt-TC07A {
     Hdr "TC07 buoc 2 - conflict_log + kiem tra hoi tu"
     Write-Host "   Conflict log (3 xung dot gan nhat):" -ForegroundColor Gray
     try {
-        python -c "import sqlite3,sys; sys.stdout.reconfigure(encoding='utf-8'); [print('     ', r[0]) for r in sqlite3.connect(r'$DB').execute('SELECT reason FROM conflict_log ORDER BY conflict_time DESC LIMIT 3')]"
+        & $PY -c "import sqlite3,sys; sys.stdout.reconfigure(encoding='utf-8'); [print('     ', r[0]) for r in sqlite3.connect(r'$DB').execute('SELECT reason FROM conflict_log ORDER BY conflict_time DESC LIMIT 3')]"
     } catch { Write-Host "   [!] $_" -ForegroundColor Red }
     Write-Host ""
     Write-Host "   Task tren may chu sau khi hao tu:" -ForegroundColor Gray
@@ -153,7 +159,7 @@ function Opt-TC08 {
     Hdr "TC08 - dong tombstone (is_deleted = 1)"
     Write-Host "   Cac dong da xoa tren may chu:" -ForegroundColor Gray
     try {
-        python -c "import sqlite3,sys; sys.stdout.reconfigure(encoding='utf-8'); [print('     ', r) for r in sqlite3.connect(r'$DB').execute('SELECT title, is_deleted, version FROM tasks WHERE is_deleted = 1 ORDER BY updated_at DESC LIMIT 5')]"
+        & $PY -c "import sqlite3,sys; sys.stdout.reconfigure(encoding='utf-8'); [print('     ', r) for r in sqlite3.connect(r'$DB').execute('SELECT title, is_deleted, version FROM tasks WHERE is_deleted = 1 ORDER BY updated_at DESC LIMIT 5')]"
     } catch { Write-Host "   [!] $_" -ForegroundColor Red }
     Write-Host ""
     Write-Host "   Task DANG SONG tren may chu (da loai dong bi xoa):" -ForegroundColor Gray
