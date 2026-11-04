@@ -1,0 +1,60 @@
+{
+  "base": "http://127.0.0.1:8000",
+  "pull": {
+    "10": {
+      "avg_seconds": 0.010545933328103274,
+      "avg_pages": 1.0,
+      "per_record_ms": 1.0545933328103274
+    },
+    "100": {
+      "avg_seconds": 0.019851800015506644,
+      "avg_pages": 2.0,
+      "per_record_ms": 0.19851800015506643
+    },
+    "1000": {
+      "avg_seconds": 0.15076306666014716,
+      "avg_pages": 12.0,
+      "per_record_ms": 0.15076306666014716
+    }
+  },
+  "push": {
+    "10": {
+      "n": 10,
+      "ok": 10,
+      "fail": 0,
+      "seconds": 0.15543280000565574,
+      "per_record_ms": 15.543280000565574,
+      "success_rate": 1.0
+    },
+    "100": {
+      "n": 100,
+      "ok": 100,
+      "fail": 0,
+      "seconds": 1.4980509000015445,
+      "per_record_ms": 14.980509000015445,
+      "success_rate": 1.0
+    },
+    "1000": {
+      "n": 1000,
+      "ok": 1000,
+      "fail": 0,
+      "seconds": 13.914790500013623,
+      "per_record_ms": 13.914790500013623,
+      "success_rate": 1.0
+    }
+  },
+  "seed": {
+    "10": 0.10966930002905428,
+    "100": 1.2688387000234798,
+    "1000": 13.597147499967832
+  },
+  "consistency": {
+    "server_active": 8,
+    "pulled_records": 1120,
+    "pulled_live": 8,
+    "missing": 0,
+    "extra": 0,
+    "duplicates": 0,
+    "converged": true
+  }
+}
