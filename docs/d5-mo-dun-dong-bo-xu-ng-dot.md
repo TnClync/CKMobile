@@ -115,40 +115,61 @@ Con trỏ là **`change_seq` do máy chủ cấp** (không dùng giờ điện t
 ## 3. Sơ đồ thuật toán
 
 ```mermaid
+
 flowchart TD
-    A[[Bắt đầu chu kỳ (worker hoặc nút sync)]] --> M{mutex: đang có chu kỳ khác?}
-    M -->|đang có| B[Chờ / bỏ qua]
-    M -->|rảnh| P1[PHASE 1 — PUSH (tối đa 3 vòng)]
-    P1 --> Q{Còn task syncStatus ≠ SYNCED?}
-    Q -->|không| P2[PHASE 2 — PULL]
-    Q -->|có| R1{Task loại gì?}
-    R1 -->|base_version = 0, chưa xoá| C1[POST /api/tasks (idempotent, TC06)]
-    R1 -->|base_version = 0, đã xoá| C0[Xoá khỏi Room, bỏ qua (chưa từng lên server)]
-    R1 -->|đã xoá| C2[DELETE /api/tasks/id]
-    R1 -->|còn sống| C3[PUT /api/tasks/id + baseVersion]
-    C1 --> H{Phản hồi}
+    A(["Bắt đầu chu kỳ: Worker hoặc nút Sync"]) --> M{"Mutex: Có chu kỳ khác đang chạy?"}
+
+    M -->|Có| B["Chờ hoặc bỏ qua"]
+    M -->|Không| P1["PHASE 1 - PUSH: Tối đa 3 vòng"]
+
+    P1 --> Q{"Còn task có syncStatus khác SYNCED?"}
+
+    Q -->|Không| P2["PHASE 2 - PULL"]
+    Q -->|Có| R1{"Phân loại task"}
+
+    R1 -->|base_version = 0, chưa xóa| C1["POST /api/tasks - Idempotent TC06"]
+    R1 -->|base_version = 0, đã xóa| C0["Xóa khỏi Room, bỏ qua"]
+    R1 -->|Đã xóa| C2["DELETE /api/tasks/id"]
+    R1 -->|Còn sống| C3["PUT /api/tasks/id + baseVersion"]
+
+    C1 --> H{"Phân loại phản hồi"}
     C2 --> H
     C3 --> H
-    H -->|200/201 + nội dung trùng| OK1[markPushed → SYNCED nếu revision chưa đổi]
-    H -->|200/201 + nội dung khác| OK2[rebase lên version server → vòng push sau gửi lại]
-    H -->|409| K[LWW: đọc bản server, ghi conflict_log, thông báo UI, rebase]
-    H -->|404| F[rebase về 0 → vòng sau chuyển thành POST]
-    H -->|400/422| E1[FAILED, lỗi cố định — không retry]
-    H -->|5xx / lỗi mạng| E2[FAILED, lỗi tạm thời → WorkManager retry (backoff 30s ×2ⁿ)]
+
+    H -->|200 hoặc 201, nội dung trùng| OK1["markPushed - SYNCED nếu revision chưa đổi"]
+    H -->|200 hoặc 201, nội dung khác| OK2["Rebase theo version server - Push lại vòng sau"]
+    H -->|409 Conflict| K["LWW: Đọc bản server, ghi conflict_log, thông báo UI, rebase"]
+    H -->|404 Not Found| F["Rebase về 0 - Vòng sau chuyển thành POST"]
+    H -->|400 hoặc 422| E1["FAILED - Lỗi cố định, không retry"]
+    H -->|5xx hoặc lỗi mạng| E2["FAILED - Lỗi tạm thời, WorkManager retry"]
+
     OK1 --> Q
     OK2 --> Q
     K --> Q
     F --> Q
-    P2 --> L1["GET /api/tasks/changes?since=cursor (trang 100)"]
-    L1 --> L2{Lấy bản server, so với bản local}
-    L2 -->|không có local & chưa xoá| L3[upsert SYNCED]
-    L2 -->|SYNCED & version server > base| L3
-    L2 -->|local còn PENDING/FAILED| L4[giữ local — để push xử 409]
-    L3 --> L5[cursor = nextCursor; lặp nếu hasMore]
+
+    P2 --> L1["GET /api/tasks/changes?since=cursor - Trang 100"]
+    L1 --> L2{"So sánh bản server với local"}
+
+    L2 -->|Không có local và chưa xóa| L3["Upsert SYNCED"]
+    L2 -->|SYNCED và server version > base| L3
+    L2 -->|Local PENDING hoặc FAILED| L4["Giữ local - Để PUSH xử lý 409"]
+
+    L3 --> L5["Cập nhật cursor = nextCursor"]
     L4 --> L5
-    L5 --> DONE[[Chu kỳ kết thúc → syncStatus UI tự cập nhật qua Flow]]
+
+    L5 --> L6{"hasMore = true?"}
+    L6 -->|Có| L1
+    L6 -->|Không| DONE(["Kết thúc chu kỳ - UI tự cập nhật qua Flow"])
+
     E1 --> DONE
     E2 --> DONE
+
+    style P1 fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style P2 fill:#dcfce7,stroke:#16a34a,color:#14532d
+    style E1 fill:#fee2e2,stroke:#dc2626,color:#991b1b
+    style E2 fill:#fef3c7,stroke:#d97706,color:#92400e
+
 ```
 
 *(Render bằng [mermaid.live](https://mermaid.live) hoặc `mmdc`; có thể xuất PNG/SVG dán vào báo cáo.)*
